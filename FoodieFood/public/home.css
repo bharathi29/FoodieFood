@@ -1,0 +1,141 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}   
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.wrapper {
+    width: 1170px;
+    margin: auto;
+}
+
+header {
+    background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5)), url('/images/bg.png');
+    background-color: #000; /* Fallback color if the image doesn't load */
+    height: 100vh;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-position: center center;
+    position: relative;
+}
+
+
+.nav-area {
+    float: right;
+    list-style: none;
+    margin-top: 10px; 
+}
+
+.nav-area li {
+    display: inline-block;
+    margin-right: 20px; 
+}
+
+.nav-area li a {
+    color: #fff;
+    text-decoration: none;
+    font-family: poppins;
+    font-size: 16px;
+    text-transform: uppercase;
+    padding: 5px 10px; 
+}
+
+.nav-area li a:hover {
+    background: #fff;
+    color: #333;
+}
+.logo {
+    max-width: 75px;
+    margin-bottom: 20px;
+    position: absolute; /* Position the logo absolutely */
+    top: 20px; /* Position from the top */
+    left: 5px; /* Position from the left */
+}
+.logo {
+    
+    margin-bottom: 20px;
+    position: absolute; /* Position the logo absolutely */
+    top: 5px; /* Position from the top */
+    left: 5px; /* Position from the left */
+    display: grid;
+            grid-template-columns: auto 1fr; /* Auto-sized column for the image, 1 fraction for the text */
+            align-items: center; /* Align items vertically */
+        }
+
+        img {
+            width:50px;
+            margin-right: 10px; /* Optional: Add some margin to create space between the image and text */
+        }
+
+.welcome-text {
+    position: absolute;
+    width: 600px;
+    height: 900px;
+    margin: 20% 30%;
+    text-align: center;
+}
+
+.welcome-text h1 {
+    text-align: center;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 60px;
+}
+
+.welcome-text h1 span {
+    color: #00fecb;
+}
+
+.welcome-text a {
+    border: 1px solid #fff;
+    padding: 10px 25px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 14px;
+    margin-top: 10px;
+    display: inline-block;
+    color: #fff;
+}
+
+.welcome-text a:hover {
+    background: #fff;
+    color: #333;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .wrapper {
+        width: 100%;
+    }
+    
+    .nav-area {
+        float: none;
+        text-align: center; 
+        margin-top: 0;
+    }
+    
+    .nav-area li {
+        display: block; 
+        margin-right: 0;
+        margin-bottom: 10px; 
+    }
+    
+    .nav-area li a {
+        padding: 5px 10px; 
+    }
+    
+    .welcome-text {
+        width: 100%;
+        height: auto;
+        margin: 30% 0;
+    }
+    
+    .welcome-text h1 {
+        font-size: 30px;
+    }
+}

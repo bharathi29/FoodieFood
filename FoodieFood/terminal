@@ -1,0 +1,163 @@
+const express = require("express");
+const session = require("express-session");
+const path = require("path");
+const bcrypt = require("bcrypt");
+const mongoose = require("mongoose");
+
+const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.set("view engine", "ejs");
+app.use(express.static("public"));
+
+// Set up session middleware
+app.use(
+  session({
+    secret: "your-secret-key",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
+// Connect to MongoDB
+mongoose.connect("mongodb://127.0.0.1:27017/foodies", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+const db = mongoose.connection;
+
+db.on("error", (err) => {
+  console.error("MongoDB connection error:", err);
+});
+
+db.once("open", () => {
+  console.log("Connected to MongoDB");
+});
+
+// Define the user schema
+const userSchema = new mongoose.Schema({
+  name: String,
+  email: String,
+  password: String,
+  allergence: String,
+});
+
+// Create the User model
+const User = mongoose.model("User", userSchema);
+
+// Routes
+
+// Home
+app.get("/", (req, res) => {
+  res.redirect("/home");
+});
+
+app.get("/home", (req, res) => {
+  res.render("home");
+});
+
+// Signup
+app.get("/signup", (req, res) => {
+  res.render("signup");
+});
+
+
+app.get("/home1", (req, res) => {
+  res.render("home1");
+});
+
+app.post("/signup", async (req, res) => {
+  try {
+    const data = {
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+      allergence: req.body.allergence,
+    };
+
+    // Check if the user already exists
+    const existingUser = await User.findOne({ name: data.name });
+    if (existingUser) {
+      return res.send("User already exists. Please choose a different username.");
+    }
+
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(data.password, saltRounds);
+
+    // Update the password with the hashed password
+    data.password = hashedPassword;
+
+    // Insert the new user data into the collection
+    await User.create(data);
+
+    // Set the session
+    req.session.username = data.name;
+
+    // Redirect to the home page after successful signup
+    res.redirect("/home1");
+  } catch (error) {
+    console.error("Error creating user:", error);
+    res.status(500).send("Error creating user. Please try again.");
+  }
+});
+
+// Login
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+app.post("/login", async (req, res) => {
+  try {
+    const check = await User.findOne({ name: req.body.username });
+    if (!check) {
+      return res.send("Username not found");
+    }
+
+    const isPasswordMatch = await bcrypt.compare(req.body.password, check.password);
+    if (isPasswordMatch) {
+      // Set the session
+      req.session.username = check.name;
+
+      res.redirect("/home1");
+    } else {
+      res.send("Wrong password");
+    }
+  } catch (error) {
+    console.error("Error during login:", error);
+    res.status(500).send("An error occurred. Please try again.");
+  }
+});
+
+// Profile
+app.get("/profile", async (req, res) => {
+  try {
+    if (!req.session.username) {
+      return res.redirect("/login");
+    }
+
+    const user = await User.findOne({ name: req.session.username });
+
+    if (!user) {
+      return res.send("User not found");
+    }
+
+    res.render("profile", { user });
+  } catch (error) {
+    console.error("Error fetching user details:", error);
+    res.status(500).send("An error occurred. Please try again.");
+  }
+});
+
+app.get("/recipesearchsignin", (req, res) => {
+  res.render("recipesearchsignin");
+});
+
+
+
+// Start the server
+const port = 4000;
+app.listen(port, () => {
+  console.log(`Server running on port: ${port}`);
+});

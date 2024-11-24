@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe Search</title>
+  <link rel="stylesheet" href="recipesearchstyles.css" />
+  <style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: rgb(230, 79, 79);
+    padding: 25px;
+}
+
+header img {
+    height: 60px;
+    width: auto;
+    margin-right: 10px;
+}
+
+header h1 {
+    margin: 0;
+}
+nav {
+    display: flex;
+    align-items: center;
+}
+
+nav a {
+    color: rgb(230, 79, 79);
+    text-decoration: none;
+    padding: 10px;
+    margin: 0 10px;
+}
+
+nav a:hover {
+    background-color: #555;
+}
+
+.menu-bar {
+    position: relative;
+    cursor: pointer;
+}
+
+.menu-box {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #55ca91;
+    color: rgb(230, 79, 79);
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.menu-bar:hover .menu-box {
+    display: block;
+}
+.div11{
+    left: 96px; top: 41px; 
+    width: 60px; height: auto; 
+    position: absolute;
+}
+.div6{
+    left: 28px; top: 23px; 
+    position: absolute; 
+    color: #426B1F; 
+    font-size: 32px; font-family: Newsreader; 
+    font-weight: 500; line-height: 32px; 
+    word-wrap: break-word;
+}
+.container {
+    background-color: rgba(144, 226, 77, 0.8); /* Semi-transparent white background */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+        <img class="div6" src="/images/img.png" alt="Logo">
+        <h1 class="div11">FoodieFood</h1>
+    </div>
+    <nav>
+        <a href="#about">About Us</a>
+        <a href="/login">Login</a>
+        <a href="/signup">Sign Up</a>
+
+        <div class="menu-bar">
+            Menu
+            <div class="menu-box">
+                <a href="fig.html">Home</a>
+                <a href="loginpage.html">Logout</a>
+            </div>
+        </div>
+    </nav>
+  </header>
+
+  <div class="search">
+    <h1>Recipe Search</h1>
+    <input type="text" id="searchInput" placeholder="Enter a recipe">
+    <button onclick="searchRecipe()">Search</button>
+  </div>
+
+  <ul id="recipeList" class="recipe-list"></ul>
+
+  <script>
+    const API_KEY = "d618406857c34320bf55b6e945393eba";
+const recipeListEl = document.getElementById("recipeList");
+
+async function searchRecipe() {
+  const searchInput = document.getElementById("searchInput").value;
+
+  // Check if search input is not empty
+  if (!searchInput.trim()) {
+    alert("Please enter a recipe name.");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&query=${searchInput}&number=5`
+    );
+    const data = await response.json();
+
+    if (data.results && data.results.length > 0) {
+      displayRecipes(data.results);
+    } else {
+      alert("No recipes found. Try a different search term.");
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    alert("An error occurred while fetching recipes. Please try again later.");
+  }
+}
+
+function displayRecipes(recipes) {
+  recipeListEl.innerHTML = "";
+  recipes.forEach((recipe) => {
+    const recipeItemEl = document.createElement("li");
+    recipeItemEl.classList.add("card");
+
+    // Add onclick attribute to each card
+    recipeItemEl.setAttribute("onclick", `redirectToRecipeDetails('${recipe.id}')`);
+
+    const featuredImageEl = document.createElement("img");
+    featuredImageEl.src = recipe.image; // Assuming recipe.image is the URL of the image
+    featuredImageEl.alt = recipe.title; // Provide a meaningful alt text
+    featuredImageEl.classList.add("featured-image");
+    featuredImageEl.style.height = "200px"; // Set the desired height
+
+    const cardBodyEl = document.createElement("article");
+    cardBodyEl.classList.add("card-body");
+
+    const headerEl = document.createElement("header");
+
+    const titleEl = document.createElement("div");
+    titleEl.classList.add("title");
+    titleEl.innerHTML = `<h3>${recipe.title}</h3>`;
+
+    headerEl.appendChild(titleEl);
+    cardBodyEl.appendChild(headerEl);
+
+    recipeItemEl.appendChild(featuredImageEl);
+    recipeItemEl.appendChild(cardBodyEl);
+
+    recipeListEl.appendChild(recipeItemEl);
+  });
+}
+
+function saveRecipe(recipeId, recipeTitle) {
+  // Modify this function to save the recipe details as needed
+  console.log(`Recipe ID: ${recipeId}, Recipe Title: ${recipeTitle} saved.`);
+}
+
+function redirectToRecipeDetails(recipeId) {
+  // Redirect to a page with details of the recipe using the recipeId
+  window.location.href = `/recipedetailssignin?id=${recipeId}`;
+}
+
+  </script>
+</body>
+</html>

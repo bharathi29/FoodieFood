@@ -1,0 +1,72 @@
+/* Add your custom styles here */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+  }
+  
+  .search {
+    background-color: #333;
+    color: #fff;
+    padding: 1em;
+    text-align: center;
+  }
+  
+  #searchInput {
+    padding: 0.5em;
+    margin-right: 0.5em;
+  }
+  
+  button {
+    padding: 0.5em 1em;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  .recipe-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    justify-content: center; /* Center the cards horizontally */
+  }
+  
+  .card {
+    background-color: #fff;
+    margin: 1em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    height: 300px; /* Adjust the height as needed */
+    width: 200px; /* Adjust the width as needed */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+  }
+  
+  .featured-image {
+    height: 200px; /* Set a fixed height for the featured image */
+    width: 100%; /* Set a fixed width to maintain aspect ratio */
+    background-size: cover;
+    background-position: center;
+    object-fit: cover; /* or 'contain' depending on your preference */
+  }
+  
+  .card-body {
+    padding: 1em;
+  }
+  
+  .title {
+    font-size: 1.1em; /* Adjust the font size */
+    margin-bottom: 0.2em; /* Reduced margin */
+  }
+  

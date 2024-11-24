@@ -1,0 +1,59 @@
+/* Add your custom styles for recipe details here */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 1em;
+  text-align: center;
+}
+
+main {
+  max-width: 800px;
+  margin: 2em auto;
+  padding: 1em;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.recipe-image {
+  flex: 1;
+  height: 300px; /* Adjust the height as needed */
+  background-size: cover;
+  background-position: center;
+}
+
+.recipe-info {
+  flex: 2;
+  padding: 1em;
+}
+
+h2 {
+  margin-bottom: 0.5em;
+  display: inline-block; /* Ensure the Save Recipe button appears next to the name */
+}
+
+p {
+  margin-bottom: 0.5em;
+}
+
+.save-button {
+  display: inline-block; /* Ensure the button appears next to the name */
+  margin-left: 10px; /* Add some margin to the left for spacing */
+  background-color: #3498db; /* Blue color for the button */
+  color: #fff; /* Text color for the button */
+  border: none;
+  padding: 8px 12px; /* Adjust the padding as needed */
+  border-radius: 4px; /* Add rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s; /* Add a smooth transition effect on hover */
+}
+
+.save-button:hover {
+  background-color: #ffa07a; /* Peach color on hover */
+}

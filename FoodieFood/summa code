@@ -1,0 +1,194 @@
+const express = require("express");
+const path = require("path");
+const bcrypt = require("bcrypt");
+const mongoose = require("mongoose");
+
+const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.set("view engine", "ejs");
+app.use(express.static("public"));
+
+// Connect to MongoDB
+mongoose.connect("mongodb://127.0.0.1:27017/foodies", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+const db = mongoose.connection;
+
+db.on("error", (err) => {
+  console.error("MongoDB connection error:", err);
+});
+
+db.once("open", () => {
+  console.log("Connected to MongoDB");
+});
+
+// Define the user schema
+const userSchema = new mongoose.Schema({
+  name: String,
+  email: String,
+  password: String,
+  allergence: String,
+});
+
+// Create the User model
+const collection = mongoose.model("User", userSchema);
+
+app.get("/", (req, res) => {
+  res.redirect("/home");
+});
+
+app.get("/home", (req, res) => {
+  res.render("home");
+});
+
+app.get("/signup", (req, res) => {
+  res.render("signup");
+});
+
+app.get("/home1", (req, res) => {
+  res.render("home1");
+});
+app.post("/signup", async (req, res) => {
+  try {
+    const data = {
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+      allergence: req.body.allergence,
+    };
+    app.get("/profile", async (req, res) => {
+      try {
+        const user = await collection.findOne({ name: req.session.username });
+    
+        if (!user) {
+          return res.send("User not found");
+        }
+    
+        // Fetch saved recipes from the database using user.savedRecipes
+    
+        res.render("profile", { user });
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+        res.status(500).send("An error occurred. Please try again.");
+      }
+    });
+    
+
+    // Check if the user already exists
+    const existingUser = await collection.findOne({ name: data.username });
+    if (existingUser) {
+      return res.send("User already exists. Please choose a different username.");
+    }
+
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(data.password, saltRounds);
+
+    // Update the password with the hashed password
+    data.password = hashedPassword;
+
+    // Insert the new user data into the collection
+    await collection.create(data);
+
+    // Redirect to the login page after successful signup
+    res.redirect("/login");
+  } catch (error) {
+    console.error("Error creating user:", error);
+    res.status(500).send("Error creating user. Please try again.");
+  }
+});
+
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+app.get("/recipesearchsignin", (req, res) => {
+  res.render("recipesearchsignin");
+});
+
+app.get("/profile", (req, res) => {
+  res.render("profile");
+});
+
+app.post("/signup", async (req, res) => {
+  // ... Existing code ...
+
+  // After creating the user, set the session
+  req.session.username = data.name;
+
+  res.redirect("/home1");
+});
+
+app.post("/login", async (req, res) => {
+  // ... Existing code ...
+
+  // After successful login, set the session
+  req.session.username = check.name;
+
+  res.redirect("/home1");
+});
+
+
+
+app.get("/recipesearchlogin", (req, res) => {
+  res.render("recipesearchlogin");
+});
+
+
+app.get("/recipedetails", (req, res) => {
+  res.render("recipedetails");
+});
+
+app.get("/recipedetailslogin", (req, res) => {
+  res.render("recipedetailslogin");
+});
+
+app.get("/recipedetailssignin", (req, res) => {
+  res.render("recipedetailssignin");
+});
+
+
+app.post("/login", async (req, res) => {
+  try {
+    const check = await collection.findOne({ name: req.body.username });
+    if (!check) {
+      return res.send("Username not found");
+    }
+
+    const isPasswordMatch = await bcrypt.compare(req.body.password, check.password);
+    if (isPasswordMatch) {
+      res.redirect("/home1");
+    } else {
+      res.send("Wrong password");
+    }
+  } catch (error) {
+    console.error("Error during login:", error);
+    res.status(500).send("An error occurred. Please try again.");
+  }
+});
+
+// randomcodescript.js
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Wait for the DOM to be fully loaded
+  const profileLink = document.querySelector('.profile-link');
+
+  if (profileLink) {
+    // Check if the profile link exists
+    profileLink.addEventListener('click', function (event) {
+      event.preventDefault(); // Prevent the default link behavior
+
+      // Redirect to the profile page
+      window.location.href = '/profile';
+    });
+  }
+});
+
+const port = 1005;
+app.listen(port, () => {
+  console.log(`Server running on port: ${port}`);
+});
+

@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <link rel="icon" href="/public/images/fffavicon.png">
+    <link rel="stylesheet" href="/signup.css">
+</head>
+<body> 
+    
+    <nav class="navbar">
+        <ul>
+            <li><a href="/home" class="home-button">Home</a></li>
+            <li><a href="/signup" class="home-button">Signup</a></li>
+            <li><a href="/login" class="home-button">Login</a></li>
+            <li><a href="#" class="back-button" onclick="history.back()">Back</a></li>
+       
+        </ul>
+    </nav><div class="logo">
+    <img  src="/images/img.png" alt="Logo"> 
+    <h4  style="color: antiquewhite; font-size: 25px;">Foodie food</h4>
+</div>
+    <div class="container">
+       <h2>Signup</h2>
+        <form action="/signup" method="post" onsubmit="return validateForm()">
+            <fieldset>
+                <legend>Details</legend>
+                <div class="input-group">
+                    <label for="name">Username</label>
+                    <input type="text" id="name" name="name" required>
+                    <div id="username-error" class="error-message"></div>
+                </div>
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                    <div id="email-error" class="error-message"></div>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <div class="password-input">
+                        <input type="password" id="password" name="password" required>
+                        <span class="eye-icon" onclick="togglePassword(this)"></span>
+                    </div>
+                    <div id="password-error" class="error-message"></div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Preferences</legend>
+                <div class="input-group">
+                    <label for="allergence">Select Allergens</label>
+                    <select name="allergence" id="allergence" required>
+                        <option value="">Select</option> 
+                        <option value="dairy">Dairy</option>
+                        <option value="egg">Egg</option>
+                        <option value="gluten">Gluten</option>
+                        <option value="grain">Grain</option>
+                        <option value="peanut">Peanut</option>
+                        <option value="seafood">Seafood</option>
+                        <option value="sesame">Sesame</option>
+                        <option value="shellfish">Shellfish</option>
+                        <option value="soy">Soy</option>
+                        <option value="Sulfite">Sulfite</option>
+                        <option value="treenut">Tree Nut</option>
+                        <option value="wheat">Wheat</option>
+                    </select>
+                </div>
+            </fieldset><br\>
+            <button type="submit">Signup</button><br\>
+                <h5>Already have an account.....?
+                <a href="/signup" class="signup-link">Login</a></h5>
+    </form>
+    <script src="signup.js"></script>
+</body>
+</html>
+
